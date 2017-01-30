@@ -43,12 +43,20 @@ public class MainActivity extends ActionBarActivity {
             Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBT, REQUEST_BLUETOOTH);
         }
-        super.onCreate(savedInstanceState);
+
+//        super.onCreate(savedInstanceState);
 
         Log.d("DEVICELIST", "Super called for DeviceListFragment onCreate\n");
         ArrayList<DeviceItem> deviceItemList = new ArrayList<DeviceItem>();
 
         Set<BluetoothDevice> pairedDevices = BTAdapter.getBondedDevices();
+
+        if (pairedDevices.size() > 0) {
+            for (BluetoothDevice device : pairedDevices) {
+                DeviceItem newDevice= new DeviceItem(device.getName(),device.getAddress(),"false");
+                deviceItemList.add(newDevice);
+            }
+        }
     }
 
 
@@ -72,8 +80,5 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private class DeviceItem {
     }
 }
